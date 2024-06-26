@@ -7,7 +7,7 @@ public delegate void EnemyDeath();
 public class Enemy : Unit
 {
     private float _health = 3;
-
+   
     public event EnemyDeath OnEnemyDeath;
     // Start is called before the first frame update
     void Start()
@@ -29,7 +29,7 @@ public class Enemy : Unit
             Die();
         }
     }
-  
+        
     public void Die()
     {
         Debug.Log("Enemy died. Invoking event..");
@@ -40,9 +40,9 @@ public class Enemy : Unit
     {
         Destroy(gameObject);
     }
-
+  
     public override void Behave()
     {
         
-    }
+}
 }

@@ -6,6 +6,8 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     public UnitManager Manager;
+    private Transform _tr;
+    float TimeT = 0;
     protected Rigidbody _rb;
     public bool IsDead = false;
     // distance to target should be smaller
@@ -67,12 +69,19 @@ public class Unit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    }
+        TimeT += Time.deltaTime;
+
+        if (TimeT > 2.0f && !Updated)
+        {
+            SetChasing(FindObjectOfType<PlayerController>().transform);
+            Updated = true;
+        }
     protected float GetDistanceToTarget()
-    {
+        {
         return Vector3.Distance(_rb.transform.position, EnemyTarget.transform.position);
     }
 
+   
     public virtual void Behave()
     {
     }

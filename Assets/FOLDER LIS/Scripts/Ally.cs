@@ -9,7 +9,7 @@ using UnityEngine;
 public delegate void AllyDeath();
 public class Ally : Unit
 {
-
+    
     public event AllyDeath OnAllyDeath;
     void Start()
     {
@@ -56,6 +56,9 @@ public class Ally : Unit
             {
                 GoTo(EnemyTarget.transform.position, _currentDedication);
             }
+            // check if we already got to the target (DistToTarget)
+                // if we did, change state to attacking
+                // if not, keep chasing (go to our target)
         }
         else if(_state == UnitState.Attacking)
         {
@@ -85,7 +88,7 @@ public class Ally : Unit
     {
         _currentMotivation -= 10;
         if (_currentMotivation <= 0)
-        {
+    {
             OnAllyDeath?.Invoke();
         }
     }

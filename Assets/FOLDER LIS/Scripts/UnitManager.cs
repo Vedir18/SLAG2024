@@ -52,7 +52,7 @@ public class UnitManager : MonoBehaviour
         for(int i=0; i< _enemies.Count; i++)
         {
             _enemies[i].Enemy.OnEnemyDeath += RemoveDeadEnemy;
-        }
+    }
 
         Object[] objectsAllies = FindObjectsOfType<Ally>();
         foreach (Object obj in objectsAllies)
@@ -83,13 +83,13 @@ public class UnitManager : MonoBehaviour
             if (currentDistance < minDistance)
             {
                 if(_enemies[i].CurrentAttackers < 2)
-                {
+            {
                     saved = i;
-                    minDistance = currentDistance;
+                minDistance = currentDistance;
                 }
                 secondChoice = i;
             }
-        }
+            }
         
         if (saved == -1)
         {
