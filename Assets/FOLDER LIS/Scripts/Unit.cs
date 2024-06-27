@@ -32,13 +32,6 @@ public class Unit : MonoBehaviour
 
     public Enemy EnemyTarget;
 
-    protected Dictionary<Emotion, float> Emotions = new Dictionary<Emotion, float>();
-    public enum Emotion
-    {
-        Motivated,
-        Brave,
-        Dedicated
-    }
 
     protected enum UnitState
     {
@@ -56,9 +49,6 @@ public class Unit : MonoBehaviour
     {
         _currentMotivation = maxMotivation;
         _currentDedication = baseDedicated * dedicatedMultiplier;
-        Emotions.Add(Emotion.Motivated, 100.0f);
-        Emotions.Add(Emotion.Brave, 100.0f);
-        Emotions.Add(Emotion.Dedicated, 100.0f);
         _state = UnitState.ChoosingTarget;
         _lastAttack = Time.time - _attackCooldown;
         _rb = GetComponent<Rigidbody>();
@@ -98,6 +88,22 @@ public class Unit : MonoBehaviour
     public virtual void Attacked()
     {
         
+    }
+
+    public void ModifyMotivated(float delta)
+    {
+        _currentMotivation += delta;
+        Mathf.Clamp(_currentMotivation, 0, maxMotivation);
+    }
+    public void ModifyBrave(float delta)
+    {
+        _currentBrave += delta;
+        Mathf.Clamp(_currentBrave, 0, 100);
+    }
+    public void ModifyDedicated(float delta)
+    {
+        _currentDedication += delta;
+        Mathf.Clamp(_currentDedication, 0, 100);
     }
 
 }
