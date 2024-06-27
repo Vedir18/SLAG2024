@@ -59,7 +59,7 @@ public class UnitManager : MonoBehaviour
         {
             _allies.Add(new AllyData((Ally)obj));
         }
-        for (int i = 0; i < _enemies.Count; i++)
+        for (int i = 0; i < _allies.Count; i++)
         {
             _allies[i].Ally.OnAllyDeath += RemoveDeadAlly;
         }
