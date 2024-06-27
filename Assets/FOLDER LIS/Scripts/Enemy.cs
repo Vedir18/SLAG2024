@@ -44,6 +44,8 @@ public class Enemy : Unit
 
         Manager = FindObjectOfType<UnitManager>();
         _speedWhenGoingToTheEdge *= dedicatedMultiplier;
+
+        animator = gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -54,6 +56,7 @@ public class Enemy : Unit
 
     public override void Attacked()
     {
+        animator.SetTrigger("T_hit");
         _currentMotivation = _currentMotivation - 10;
         if(_currentMotivation <= 0)
         {
@@ -170,4 +173,5 @@ public class Enemy : Unit
         AllyTarget = null;
         _state = UnitState.ChoosingTarget;
     }
+
 }

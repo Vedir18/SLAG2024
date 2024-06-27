@@ -31,6 +31,7 @@ public class Unit : MonoBehaviour
     public Enemy EnemyTarget;
     public Ally AllyTarget;
 
+    protected Animator animator;
 
     protected enum UnitState
     {
@@ -53,6 +54,7 @@ public class Unit : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
 
         Manager = FindObjectOfType<UnitManager>();
+        animator = gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -111,5 +113,11 @@ public class Unit : MonoBehaviour
         _currentDedication += delta;
         Mathf.Clamp(_currentDedication, 0, 100);
     }
-
+    public void Shout()
+    {
+        if(animator != null)
+        {
+            animator.SetTrigger("T_shout");
+        }
+    }
 }
