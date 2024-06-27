@@ -36,6 +36,7 @@ public class Enemy : Unit
     // Start is called before the first frame update
     void Start()
     {
+        SetMaterials();
         _currentMotivation = 100;
         _currentDedication = baseDedicated * dedicatedMultiplier;
         _state = UnitState.ChoosingTarget;
@@ -44,16 +45,13 @@ public class Enemy : Unit
 
         Manager = FindObjectOfType<UnitManager>();
         _speedWhenGoingToTheEdge *= dedicatedMultiplier;
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-
+        animator = gameObject.GetComponent<Animator>();
     }
 
     public override void Attacked()
     {
+        animator.SetTrigger("T_hit");
         _currentMotivation = _currentMotivation - 10;
         if (_currentMotivation <= 0)
         {
@@ -172,4 +170,5 @@ public class Enemy : Unit
         AllyTarget = null;
         _state = UnitState.ChoosingTarget;
     }
+
 }

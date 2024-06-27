@@ -11,8 +11,10 @@ public class Ally : Unit
 {
     
     public event AllyDeath OnAllyDeath;
+
     void Start()
     {
+        SetMaterials();
         _currentMotivation = maxMotivation;
         _currentDedication = baseDedicated * dedicatedMultiplier;
         _state = UnitState.ChoosingTarget;
@@ -20,6 +22,8 @@ public class Ally : Unit
         _rb = GetComponent<Rigidbody>();
 
         Manager = FindObjectOfType<UnitManager>();
+
+        animator = gameObject.GetComponent<Animator>();
     }
 
   
@@ -27,6 +31,7 @@ public class Ally : Unit
     {
         if(_state == UnitState.ChoosingTarget)
         {
+            animator.SetBool("B_iswalking", false);
             // choose target
             EnemyTarget = Manager.GetNearestEnemy(_rb.transform.position);
             if(EnemyTarget != null )
@@ -43,6 +48,7 @@ public class Ally : Unit
         }
         else if(_state == UnitState.ChasingTarget)
         {
+            animator.SetBool("B_iswalking", true);
             if (GetDistanceToEnemyTarget() <= DistanceToTarget)
             {
                 _state = UnitState.Attacking;
@@ -65,6 +71,7 @@ public class Ally : Unit
             {
                 _lastAttack = Time.time;
                 EnemyTarget.Attacked();
+                animator.SetTrigger("T_kick");
                 //Attack();
             }
         }
