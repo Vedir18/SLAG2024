@@ -23,7 +23,7 @@ public class PlayerSkillManager : MonoBehaviour
 
     [SerializeField] private float boredomSpeed;
     private float healingExciteMeter, speedExciteMeter, damageExciteMeter;
-    private int currentInstrument = 0;
+    private int currentInstrument = -1;
     private BeatManager beatManager;
     private int skillPerformance = 0;
     public int SkillPerformance => skillPerformance;
@@ -34,6 +34,7 @@ public class PlayerSkillManager : MonoBehaviour
         this.beatManager = beatManager;
         this.beatManager.Initialize(this);
         skillMaterial = skillVisual.GetComponent<MeshRenderer>().material;
+        SwapInstrument(0);
     }
 
     public void ProcessTick(InputManager inputManager)
@@ -59,6 +60,8 @@ public class PlayerSkillManager : MonoBehaviour
                 skillAlpha = strongAlpha; break;
         }
         skillMaterial.color = new Vector4(skillMaterial.color.r, skillMaterial.color.g, skillMaterial.color.b, skillAlpha);
+
+        beatManager.SetActiveInstrumentVolume(currentInstrument, skillPerformance);
     }
 
     public void GoodHit()

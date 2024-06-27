@@ -10,21 +10,21 @@ public class BeatManager : MonoBehaviour
     [SerializeField] private AudioSource[] backgroundAudio;
     [SerializeField] private float bufforTime;
     [SerializeField] private float backgroundVolume;
+    [SerializeField] private float inactiveSkillVolume;
+    [SerializeField] private float activeSkillVolume;
+    [SerializeField] private float strongSkillVolume;
 
     [Header("Healing")]
     [SerializeField] private Beatmap healingBeatmap;
-    [SerializeField] private AudioSource[] healingAudioBack;
-    [SerializeField] private AudioSource[] healingAudioMain;
+    [SerializeField] private AudioSource[] healingAudioTrack;
 
     [Header("Speed")]
     [SerializeField] private Beatmap speedBeatmap;
-    [SerializeField] private AudioSource[] speedAudioBack;
-    [SerializeField] private AudioSource[] speedAudioMain;
+    [SerializeField] private AudioSource[] speedAudioTrack;
 
     [Header("Damage")]
     [SerializeField] private Beatmap damageBeatmap;
-    [SerializeField] private AudioSource[] dmgAudioBack;
-    [SerializeField] private AudioSource[] dmgAudioMain;
+    [SerializeField] private AudioSource[] dmgAudioTrack;
 
     [Header("PhysicalBeats")]
     [SerializeField] private Transform center;
@@ -42,8 +42,6 @@ public class BeatManager : MonoBehaviour
     [Header("MusicSettings")]
     [SerializeField] private float bpm;
     [SerializeField] private int beatsPerPhrase;
-
-
 
     [Header("Inspect")]
     [SerializeField] private Beatmap currentBeatmap;
@@ -74,7 +72,14 @@ public class BeatManager : MonoBehaviour
         activeBeats = new List<SingleBeat>();
 
         SwapInstrument(0);
-        backgroundAudio[0].Play();
+        backgroundAudio[0].volume = backgroundVolume;
+        backgroundAudio[1].volume = backgroundVolume;
+
+        double time = AudioSettings.dspTime;
+        backgroundAudio[0].PlayScheduled(time + .1f);
+        healingAudioTrack[0].PlayScheduled(time + .1f);
+        speedAudioTrack[0].PlayScheduled(time + .1f);
+        dmgAudioTrack[0].PlayScheduled(time + .1f);
     }
 
     private void ResetBeats()
@@ -112,18 +117,48 @@ public class BeatManager : MonoBehaviour
         SpawnMissingBeats();
     }
 
+    public void SetActiveInstrumentVolume(int instrumentID, int skillPerformance)
+    {
+        float instrumentVolume = 0;
+        switch (skillPerformance)
+        {
+            case 0:
+                instrumentVolume = inactiveSkillVolume;
+                break;
+            case 1:
+                instrumentVolume = activeSkillVolume;
+                break;
+            case 2:
+                instrumentVolume = strongSkillVolume;
+                break;
+        }
+
+        switch (instrumentID)
+        {
+            case 0:
+                healingAudioTrack[0].volume = instrumentVolume;
+                healingAudioTrack[1].volume = instrumentVolume;
+                break;
+            case 1:
+                speedAudioTrack[0].volume = instrumentVolume;
+                speedAudioTrack[1].volume = instrumentVolume;
+                break;
+            case 2:
+                dmgAudioTrack[0].volume = instrumentVolume;
+                dmgAudioTrack[1].volume = instrumentVolume;
+                break;
+        }
+    }
+
     private void HandleMusicLoop()
     {
         double audioTime = AudioSettings.dspTime;
         if (TimeElapsed + bufforTime > LoopDuration)
         {
             backgroundAudio[(CurrentLoop + 1) % 2].PlayScheduled(audioTime + TimeElapsed + bufforTime - LoopDuration);
-            healingAudioBack[(CurrentLoop + 1) % 2].PlayScheduled(audioTime + TimeElapsed + bufforTime - LoopDuration);
-            healingAudioMain[(CurrentLoop + 1) % 2].PlayScheduled(audioTime + TimeElapsed + bufforTime - LoopDuration);
-            speedAudioBack[(CurrentLoop + 1) % 2].PlayScheduled(audioTime + TimeElapsed + bufforTime - LoopDuration);
-            speedAudioMain[(CurrentLoop + 1) % 2].PlayScheduled(audioTime + TimeElapsed + bufforTime - LoopDuration);
-            dmgAudioBack[(CurrentLoop + 1) % 2].PlayScheduled(audioTime + TimeElapsed + bufforTime - LoopDuration);
-            dmgAudioMain[(CurrentLoop + 1) % 2].PlayScheduled(audioTime + TimeElapsed + bufforTime - LoopDuration);
+            healingAudioTrack[(CurrentLoop + 1) % 2].PlayScheduled(audioTime + TimeElapsed + bufforTime - LoopDuration);
+            speedAudioTrack[(CurrentLoop + 1) % 2].PlayScheduled(audioTime + TimeElapsed + bufforTime - LoopDuration);
+            dmgAudioTrack[(CurrentLoop + 1) % 2].PlayScheduled(audioTime + TimeElapsed + bufforTime - LoopDuration);
         }
 
         if (TimeElapsed >= LoopDuration)
@@ -223,24 +258,18 @@ public class BeatManager : MonoBehaviour
         {
             case 0:
                 currentBeatmap = healingBeatmap;
-                healingAudioBack[0].volume = backgroundVolume;
-                healingAudioBack[1].volume = backgroundVolume;
-                healingAudioMain[0].volume = 1;
-                healingAudioMain[1].volume = 1;
+                healingAudioTrack[0].volume = backgroundVolume;
+                healingAudioTrack[1].volume = backgroundVolume;
                 break;
             case 1:
                 currentBeatmap = speedBeatmap;
-                speedAudioBack[0].volume = backgroundVolume;
-                speedAudioBack[1].volume = backgroundVolume;
-                speedAudioMain[0].volume = 1;
-                speedAudioMain[1].volume = 1;
+                speedAudioTrack[0].volume = backgroundVolume;
+                speedAudioTrack[1].volume = backgroundVolume;
                 break;
             case 2:
                 currentBeatmap = damageBeatmap;
-                dmgAudioBack[0].volume = backgroundVolume;
-                dmgAudioBack[1].volume = backgroundVolume;
-                dmgAudioMain[0].volume = 1;
-                dmgAudioMain[1].volume = 1;
+                dmgAudioTrack[0].volume = backgroundVolume;
+                dmgAudioTrack[1].volume = backgroundVolume;
                 break;
         }
 
@@ -251,17 +280,11 @@ public class BeatManager : MonoBehaviour
 
     private void SilenceInstruments()
     {
-        healingAudioBack[0].volume = 0;
-        healingAudioBack[1].volume = 0;
-        healingAudioMain[0].volume = 0;
-        healingAudioMain[1].volume = 0;
-        speedAudioBack[0].volume = 0;
-        speedAudioBack[1].volume = 0;
-        speedAudioMain[0].volume = 0;
-        speedAudioMain[1].volume = 0;
-        dmgAudioBack[0].volume = 0;
-        dmgAudioBack[1].volume = 0;
-        dmgAudioMain[0].volume = 0;
-        dmgAudioMain[1].volume = 0;
+        healingAudioTrack[0].volume = 0;
+        healingAudioTrack[1].volume = 0;
+        speedAudioTrack[0].volume = 0;
+        speedAudioTrack[1].volume = 0;
+        dmgAudioTrack[0].volume = 0;
+        dmgAudioTrack[1].volume = 0;
     }
 }
