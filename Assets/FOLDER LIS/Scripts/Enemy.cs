@@ -36,6 +36,7 @@ public class Enemy : Unit
     // Start is called before the first frame update
     void Start()
     {
+        SetMaterials();
         _currentMotivation = 100;
         _currentDedication = baseDedicated * dedicatedMultiplier;
         _state = UnitState.ChoosingTarget;
@@ -44,12 +45,6 @@ public class Enemy : Unit
 
         Manager = FindObjectOfType<UnitManager>();
         _speedWhenGoingToTheEdge *= dedicatedMultiplier;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public override void Attacked()

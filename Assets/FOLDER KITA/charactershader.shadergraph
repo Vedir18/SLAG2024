@@ -571,10 +571,10 @@
     "m_Guid": {
         "m_GuidSerialized": "818daef6-0a01-4a5e-b57f-f467f2c7dc6e"
     },
-    "m_Name": "health",
+    "m_Name": "damaged",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "health",
-    "m_DefaultReferenceName": "_health",
+    "m_RefNameGeneratedByDisplayName": "damaged",
+    "m_DefaultReferenceName": "_damaged",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -584,7 +584,7 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
-    "m_Value": 0.17000000178813935,
+    "m_Value": 0.0,
     "m_FloatType": 0,
     "m_RangeValues": {
         "x": 0.0,
@@ -645,7 +645,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "2d90da69f75942e2b28a5d7889712f8b",
     "m_Id": 0,
-    "m_DisplayName": "outlineStr",
+    "m_DisplayName": "outline",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -1424,10 +1424,10 @@
     "m_Guid": {
         "m_GuidSerialized": "edb29fe5-7cec-46c3-8f44-4f34a4ab10f7"
     },
-    "m_Name": "outlineStr",
+    "m_Name": "outline",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "outlineStr",
-    "m_DefaultReferenceName": "_outlineStr",
+    "m_RefNameGeneratedByDisplayName": "outline",
+    "m_DefaultReferenceName": "_outline",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -1437,7 +1437,7 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
-    "m_Value": 1.0,
+    "m_Value": 0.0,
     "m_FloatType": 0,
     "m_RangeValues": {
         "x": 0.0,
@@ -1885,7 +1885,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "d12b35fb1c624c74b15cb910cace028e",
     "m_Id": 0,
-    "m_DisplayName": "health",
+    "m_DisplayName": "damaged",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",

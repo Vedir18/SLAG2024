@@ -108,6 +108,9 @@ MonoBehaviour:
   _attackCooldown: 1
   EnemyTarget: {fileID: 0}
   AllyTarget: {fileID: 0}
+  _hatRenderer: {fileID: 3278752296029425040}
+  _bodyRenderer: {fileID: 3853552179742090885}
+  _lineRenderer: {fileID: 6228140304091000358}
   _emptyTarget: {fileID: 0}
   _speedWhenGoingToTheEdge: 100
   _buffWavePrefab: {fileID: 1789987007107859061, guid: 0f272e09dcf5d4045b3e8fdfe8eddf0d,
@@ -194,6 +197,12 @@ PrefabInstance:
 --- !u!4 &697902982049292489 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2039153958983928099, guid: b50190926d8067549becdae9aeb0953d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1577373298028341738}
+  m_PrefabAsset: {fileID: 0}
+--- !u!96 &6228140304091000358 stripped
+TrailRenderer:
+  m_CorrespondingSourceObject: {fileID: 4867608566225782732, guid: b50190926d8067549becdae9aeb0953d,
     type: 3}
   m_PrefabInstance: {fileID: 1577373298028341738}
   m_PrefabAsset: {fileID: 0}
@@ -345,6 +354,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SK_shroom
       objectReference: {fileID: 0}
+    - target: {fileID: 1497437909633194360, guid: 486a05bada4f1ea42b2f45d53fd7caff,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d962fc268fb9b2e4594b9a03a416b95d, type: 2}
     - target: {fileID: 3423074589931637186, guid: 486a05bada4f1ea42b2f45d53fd7caff,
         type: 3}
       propertyPath: m_IsActive
@@ -440,6 +454,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 486a05bada4f1ea42b2f45d53fd7caff, type: 3}
+--- !u!137 &3278752296029425040 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1497437909633194360, guid: 486a05bada4f1ea42b2f45d53fd7caff,
+    type: 3}
+  m_PrefabInstance: {fileID: 4127408386020431080}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &3853552179742090885 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 881880092219994733, guid: 486a05bada4f1ea42b2f45d53fd7caff,
+    type: 3}
+  m_PrefabInstance: {fileID: 4127408386020431080}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4525336363927220995 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 486a05bada4f1ea42b2f45d53fd7caff,

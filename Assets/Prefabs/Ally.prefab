@@ -108,6 +108,9 @@ MonoBehaviour:
   _attackCooldown: 1
   EnemyTarget: {fileID: 0}
   AllyTarget: {fileID: 0}
+  _hatRenderer: {fileID: 2022522899952177399}
+  _bodyRenderer: {fileID: 426309206540185970}
+  _lineRenderer: {fileID: 5063015142694125609}
 --- !u!1001 &418352359035127781
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -184,6 +187,12 @@ PrefabInstance:
 --- !u!4 &1838259169995378374 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2039153958983928099, guid: b50190926d8067549becdae9aeb0953d,
+    type: 3}
+  m_PrefabInstance: {fileID: 418352359035127781}
+  m_PrefabAsset: {fileID: 0}
+--- !u!96 &5063015142694125609 stripped
+TrailRenderer:
+  m_CorrespondingSourceObject: {fileID: 4867608566225782732, guid: b50190926d8067549becdae9aeb0953d,
     type: 3}
   m_PrefabInstance: {fileID: 418352359035127781}
   m_PrefabAsset: {fileID: 0}
@@ -430,9 +439,21 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 486a05bada4f1ea42b2f45d53fd7caff, type: 3}
+--- !u!137 &426309206540185970 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 881880092219994733, guid: 486a05bada4f1ea42b2f45d53fd7caff,
+    type: 3}
+  m_PrefabInstance: {fileID: 709207761280074527}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1035025060180649204 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 486a05bada4f1ea42b2f45d53fd7caff,
+    type: 3}
+  m_PrefabInstance: {fileID: 709207761280074527}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &2022522899952177399 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7654169455358733336, guid: 486a05bada4f1ea42b2f45d53fd7caff,
     type: 3}
   m_PrefabInstance: {fileID: 709207761280074527}
   m_PrefabAsset: {fileID: 0}

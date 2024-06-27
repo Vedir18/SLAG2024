@@ -11,8 +11,10 @@ public class Ally : Unit
 {
     
     public event AllyDeath OnAllyDeath;
+
     void Start()
     {
+        SetMaterials();
         _currentMotivation = maxMotivation;
         _currentDedication = baseDedicated * dedicatedMultiplier;
         _state = UnitState.ChoosingTarget;

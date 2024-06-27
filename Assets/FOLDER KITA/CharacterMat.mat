@@ -61,7 +61,9 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _damaged: 0
     - _health: 0
+    - _outline: 0
     - _outlineStr: 0
     m_Colors:
     - _outlineColor: {r: 1, g: 0.89455295, b: 0, a: 0}
