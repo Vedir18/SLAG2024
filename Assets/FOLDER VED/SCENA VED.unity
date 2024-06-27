@@ -302,6 +302,12 @@ MonoBehaviour:
   AllyTarget: {fileID: 0}
   _emptyTarget: {fileID: 0}
   _speedWhenGoingToTheEdge: 100
+  _buffWavePrefab: {fileID: 0}
+  _debuffWavePrefab: {fileID: 0}
+  _waveLifetime: 5
+  _waveRange: 20
+  _changeBrave: 0
+  _changeDedicated: 0
 --- !u!135 &764814580
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -896,6 +902,12 @@ MonoBehaviour:
   AllyTarget: {fileID: 0}
   _emptyTarget: {fileID: 0}
   _speedWhenGoingToTheEdge: 100
+  _buffWavePrefab: {fileID: 0}
+  _debuffWavePrefab: {fileID: 0}
+  _waveLifetime: 5
+  _waveRange: 20
+  _changeBrave: 0
+  _changeDedicated: 0
 --- !u!135 &1658146469
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1222,21 +1234,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BeatManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 8370621967801138704, guid: 7cd9eab318ba99740955df43502d7440,
-        type: 3}
-      propertyPath: maxBeatDistance
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 8927935097504746388, guid: 7cd9eab318ba99740955df43502d7440,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 8927935097504746388, guid: 7cd9eab318ba99740955df43502d7440,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -26.5
       objectReference: {fileID: 0}
     - target: {fileID: 8946652355625631229, guid: 7cd9eab318ba99740955df43502d7440,
         type: 3}

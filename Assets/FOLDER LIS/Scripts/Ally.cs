@@ -38,6 +38,7 @@ public class Ally : Unit
             {
                 // We probably just won
                 _state = UnitState.Idle;
+                _rb.velocity = Vector3.zero; ;
             }
         }
         else if(_state == UnitState.ChasingTarget)

@@ -72,15 +72,12 @@ public class PlayerSkillManager : MonoBehaviour
             goodHits = 0;
             ModifySkillPerformance(1);
         }
-
-        Debug.Log($"SkillPerf: {skillPerformance}");
     }
 
     public void FailHit()
     {
         goodHits = 0;
         ModifySkillPerformance(-1);
-        Debug.Log($"SkillPerf: {skillPerformance}");
     }
 
     private void SwapInstrument(int instrumentClick)

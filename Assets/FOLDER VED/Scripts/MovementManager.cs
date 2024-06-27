@@ -19,6 +19,7 @@ public class MovementManager : MonoBehaviour
     {
         ModifySpeed(multiplierReduceVelocity * Time.fixedDeltaTime);
         rb.velocity = new Vector3(inputManager.MovementInput.x, 0, inputManager.MovementInput.y) * playerSpeed * (100f + speedMultiplier) / 100f;
+        if(inputManager.MovementInput != Vector2.zero) rb.transform.forward = rb.velocity;
     }
 
     public void ModifySpeed(float delta)
