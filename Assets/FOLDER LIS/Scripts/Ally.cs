@@ -15,9 +15,6 @@ public class Ally : Unit
     {
         _currentMotivation = maxMotivation;
         _currentDedication = baseDedicated * dedicatedMultiplier;
-        Emotions.Add(Emotion.Motivated, 100.0f);
-        Emotions.Add(Emotion.Brave, 100.0f);
-        Emotions.Add(Emotion.Dedicated, 100.0f);
         _state = UnitState.ChoosingTarget;
         _lastAttack = Time.time - _attackCooldown;
         _rb = GetComponent<Rigidbody>();
