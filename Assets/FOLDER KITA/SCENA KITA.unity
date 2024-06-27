@@ -13945,7 +13945,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &834823315
 Transform:
   m_ObjectHideFlags: 0
@@ -21599,7 +21599,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!137 &5578646597957097223
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -22062,7 +22062,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!137 &8596475234971344863
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
