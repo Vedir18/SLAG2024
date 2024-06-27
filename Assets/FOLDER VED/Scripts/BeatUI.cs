@@ -18,7 +18,7 @@ public class BeatUI : MonoBehaviour
         for(int i = 0; i < _beatCount; i++)
         {
             RectTransform newBeat = Instantiate(beatUIPrefab).GetComponent<RectTransform>();
-            newBeat.parent = transform;
+            newBeat.SetParent(transform);
             newBeat.gameObject.SetActive(false);
             spareBeats.Add(newBeat);
         }

@@ -7,32 +7,60 @@ using UnityEngine;
 public class BeatManager : MonoBehaviour
 {
     [Header("Refs")]
-    [SerializeField] private AudioSource music;
-    [SerializeField] private AudioSource beatSound;
+    [SerializeField] private AudioSource[] backgroundAudio;
+    [SerializeField] private float bufforTime;
+    [SerializeField] private float backgroundVolume;
+
+    [Header("Healing")]
+    [SerializeField] private Beatmap healingBeatmap;
+    [SerializeField] private AudioSource[] healingAudioBack;
+    [SerializeField] private AudioSource[] healingAudioMain;
+
+    [Header("Speed")]
+    [SerializeField] private Beatmap speedBeatmap;
+    [SerializeField] private AudioSource[] speedAudioBack;
+    [SerializeField] private AudioSource[] speedAudioMain;
+
+    [Header("Damage")]
+    [SerializeField] private Beatmap damageBeatmap;
+    [SerializeField] private AudioSource[] dmgAudioBack;
+    [SerializeField] private AudioSource[] dmgAudioMain;
+
+    [Header("PhysicalBeats")]
     [SerializeField] private Transform center;
     [SerializeField] private GameObject beatPrefab;
-    [Space]
+
+    [Header("UI Refs")]
     [SerializeField] private BeatUI _beatUI;
-    [SerializeField] private Beatmap currentBeatmap;
     private PlayerSkillManager _playerSkillManager;
 
-    [Header("Settings")]
-    [SerializeField] private float bpm;
+    [Header("InputSettings")]
     [SerializeField] private float maxBeatDistance;
     [SerializeField] private float timeDistanceFactor;
     [SerializeField] private float timeDistanceFactorUI;
-    private float beatDuration => 60f / bpm;
-    private float timeElapsed => (float)music.timeSamples / music.clip.frequency;
+
+    [Header("MusicSettings")]
+    [SerializeField] private float bpm;
+    [SerializeField] private int beatsPerPhrase;
+
+
+
     [Header("Inspect")]
+    [SerializeField] private Beatmap currentBeatmap;
     [SerializeField] private List<SingleBeat> activeBeats;
     [SerializeField] private List<SingleBeat> spareBeats;
     [SerializeField] private int beatCount = 20;
+    public int CurrentLoop = 0;
+    public float BeatDuration => 60f / bpm;
+    public double TimeElapsed => (double)(backgroundAudio[CurrentLoop % 2].timeSamples) / backgroundAudio[CurrentLoop % 2].clip.frequency;
+    public double LoopDuration => (double)healingBeatmap.beats.Length * BeatDuration;
+    private int CurrentBeat => Mathf.FloorToInt((float)TimeElapsed / BeatDuration);
 
 
     public void Initialize(PlayerSkillManager playerSkillManager)
     {
         _playerSkillManager = playerSkillManager;
-        _beatUI.Initialize(beatCount+1);
+        _beatUI.Initialize(beatCount + 1);
 
         spareBeats = new List<SingleBeat>();
         for (int i = 0; i < beatCount; i++)
@@ -43,42 +71,73 @@ public class BeatManager : MonoBehaviour
         }
 
         activeBeats = new List<SingleBeat>();
-        SingleBeat firstBeat = Instantiate(beatPrefab).GetComponent<SingleBeat>();
-        firstBeat.Initialize(0, beatDuration, timeDistanceFactor, timeDistanceFactorUI, this, 0, _beatUI.ActivateNewBeat());
-        activeBeats.Add(firstBeat);
-        SingleBeat lastSpawnedBeat = activeBeats[activeBeats.Count - 1];
-        (int, int, int) nextBeatData = GetNextBeatID(lastSpawnedBeat);
-        while (lastSpawnedBeat.transform.localPosition.x + nextBeatData.Item3 * timeDistanceFactor * beatDuration < maxBeatDistance)
-        {
-            var newBeat = SpawnBeat(nextBeatData.Item1, nextBeatData.Item2);
-            lastSpawnedBeat = newBeat;
-            nextBeatData = GetNextBeatID(newBeat);
-        }
-        music.PlayScheduled(AudioSettings.dspTime + 2f);
-        beatSound.PlayScheduled(AudioSettings.dspTime + .5f);
-        beatSound.PlayScheduled(AudioSettings.dspTime + 1f);
-        beatSound.PlayScheduled(AudioSettings.dspTime + 1.5f);
+
+        SwapInstrument(0);
+        backgroundAudio[0].Play();
     }
 
-    private SingleBeat SpawnBeat(int beatID, int beatNumber)
+    private void ResetBeats()
+    {
+        foreach (SingleBeat beat in activeBeats)
+        {
+            beat.gameObject.SetActive(false);
+            beat.FreeUI();
+            spareBeats.Add(beat);
+        }
+        activeBeats.Clear();
+    }
+
+    private void SpawnInitialBeat()
+    {
+        SingleBeat initialBeat = SpawnBeat(CurrentBeat, CurrentLoop);
+    }
+
+    private SingleBeat SpawnBeat(int beatID, int beatLoop)
     {
         var newBeat = spareBeats[spareBeats.Count - 1];
-        newBeat.Initialize(beatID, beatDuration, timeDistanceFactor, timeDistanceFactorUI, this, beatNumber, _beatUI.ActivateNewBeat());
+        newBeat.Initialize(beatID, timeDistanceFactor, timeDistanceFactorUI, this, beatLoop, _beatUI.ActivateNewBeat());
         spareBeats.Remove(newBeat);
         activeBeats.Add(newBeat);
-        newBeat.MoveBeats(timeElapsed);
+        newBeat.MoveBeat();
         newBeat.gameObject.SetActive(true);
         return newBeat;
     }
 
     public void ProcessTick(InputManager inputManager)
     {
-        //Checking for hit beats
-        if (inputManager.Clicked)
+        HandleMusicLoop();
+        TryHittingABeat(inputManager.Clicked);
+        MoveActiveBeats();
+        SpawnMissingBeats();
+    }
+
+    private void HandleMusicLoop()
+    {
+        double audioTime = AudioSettings.dspTime;
+        if (TimeElapsed + bufforTime > LoopDuration)
+        {
+            backgroundAudio[(CurrentLoop + 1) % 2].PlayScheduled(audioTime + TimeElapsed + bufforTime - LoopDuration);
+            healingAudioBack[(CurrentLoop + 1) % 2].PlayScheduled(audioTime + TimeElapsed + bufforTime - LoopDuration);
+            healingAudioMain[(CurrentLoop + 1) % 2].PlayScheduled(audioTime + TimeElapsed + bufforTime - LoopDuration);
+            speedAudioBack[(CurrentLoop + 1) % 2].PlayScheduled(audioTime + TimeElapsed + bufforTime - LoopDuration);
+            speedAudioMain[(CurrentLoop + 1) % 2].PlayScheduled(audioTime + TimeElapsed + bufforTime - LoopDuration);
+            dmgAudioBack[(CurrentLoop + 1) % 2].PlayScheduled(audioTime + TimeElapsed + bufforTime - LoopDuration);
+            dmgAudioMain[(CurrentLoop + 1) % 2].PlayScheduled(audioTime + TimeElapsed + bufforTime - LoopDuration);
+        }
+
+        if (TimeElapsed >= LoopDuration)
+        {
+            CurrentLoop++;
+        }
+    }
+
+    private void TryHittingABeat(bool clicked)
+    {
+        if (clicked)
         {
             Collider[] hits = Physics.OverlapSphere(center.position, .5f);
             bool succesfull = false;
-            foreach(Collider hit in hits) 
+            foreach (Collider hit in hits)
             {
                 SingleBeat beatHit = hit.GetComponent<SingleBeat>();
                 if (beatHit != null)
@@ -91,36 +150,39 @@ public class BeatManager : MonoBehaviour
             }
             if (!succesfull) _playerSkillManager.FailHit();
         }
+    }
 
+    private void MoveActiveBeats()
+    {
         foreach (SingleBeat beat in activeBeats)
         {
-            beat.MoveBeats(timeElapsed);
+            beat.MoveBeat();
         }
+    }
 
+    private void SpawnMissingBeats()
+    {
         SingleBeat lastSpawnedBeat = activeBeats[activeBeats.Count - 1];
-        (int, int, int) nextBeatData = GetNextBeatID(lastSpawnedBeat);
-        while (lastSpawnedBeat.transform.localPosition.x + nextBeatData.Item3 * timeDistanceFactor * beatDuration < maxBeatDistance)
+        (int, int) nextBeatData = GetNextBeat(lastSpawnedBeat);
+
+        while (SingleBeat.GetTimeLeft(nextBeatData.Item1, nextBeatData.Item2 - CurrentLoop, this) * timeDistanceFactor < maxBeatDistance)
         {
             var newBeat = SpawnBeat(nextBeatData.Item1, nextBeatData.Item2);
-            lastSpawnedBeat = newBeat;
-            nextBeatData = GetNextBeatID(newBeat);
+            nextBeatData = GetNextBeat(newBeat);
         }
-
-
     }
+
 
     public void BeatFailed(SingleBeat beat)
     {
         RestBeat(beat);
         _playerSkillManager.FailHit();
-        Debug.Log($"{beat.BeatID} failed");
     }
 
     public void BeatHit(SingleBeat beat)
     {
         RestBeat(beat);
         _playerSkillManager.GoodHit();
-        Debug.Log($"{beat.BeatID} hit");
     }
 
     private void RestBeat(SingleBeat beat)
@@ -130,24 +192,75 @@ public class BeatManager : MonoBehaviour
         spareBeats.Add(beat);
     }
 
-    private (int, int, int) GetNextBeatID(SingleBeat lastBeat)
+    private (int, int) GetNextBeat(SingleBeat lastBeat)
     {
-        int beatDist = 0;
         int nextBeatID = lastBeat.BeatID;
-        int nextBeatNumber = lastBeat.BeatNumber;
+        int nextBeatLoop = lastBeat.Loop;
         do
         {
-            beatDist++;
             nextBeatID++;
-            nextBeatNumber++;
-            if (nextBeatID == currentBeatmap.beats.Length) nextBeatID = 0;
+            if (nextBeatID == currentBeatmap.beats.Length)
+            {
+                nextBeatLoop++;
+                nextBeatID = 0;
+            }
         } while (!currentBeatmap.beats[nextBeatID]);
 
-        return (nextBeatID, nextBeatNumber, beatDist);
+        return (nextBeatID, nextBeatLoop);
     }
 
-    internal void ReturnBeatUI(RectTransform beatUI)
+    public void ReturnBeatUI(RectTransform beatUI)
     {
         _beatUI.ReturnBeat(beatUI);
+    }
+
+    public void SwapInstrument(int instrumentID)
+    {
+        SilenceInstruments();
+
+        switch (instrumentID)
+        {
+            case 0:
+                currentBeatmap = healingBeatmap;
+                healingAudioBack[0].volume = backgroundVolume;
+                healingAudioBack[1].volume = backgroundVolume;
+                healingAudioMain[0].volume = 1;
+                healingAudioMain[1].volume = 1;
+                break;
+            case 1:
+                currentBeatmap = speedBeatmap;
+                speedAudioBack[0].volume = backgroundVolume;
+                speedAudioBack[1].volume = backgroundVolume;
+                speedAudioMain[0].volume = 1;
+                speedAudioMain[1].volume = 1;
+                break;
+            case 2:
+                currentBeatmap = damageBeatmap;
+                dmgAudioBack[0].volume = backgroundVolume;
+                dmgAudioBack[1].volume = backgroundVolume;
+                dmgAudioMain[0].volume = 1;
+                dmgAudioMain[1].volume = 1;
+                break;
+        }
+
+        ResetBeats();
+        SpawnInitialBeat();
+        SpawnMissingBeats();
+    }
+
+    private void SilenceInstruments()
+    {
+        healingAudioBack[0].volume = 0;
+        healingAudioBack[1].volume = 0;
+        healingAudioMain[0].volume = 0;
+        healingAudioMain[1].volume = 0;
+        speedAudioBack[0].volume = 0;
+        speedAudioBack[1].volume = 0;
+        speedAudioMain[0].volume = 0;
+        speedAudioMain[1].volume = 0;
+        dmgAudioBack[0].volume = 0;
+        dmgAudioBack[1].volume = 0;
+        dmgAudioMain[0].volume = 0;
+        dmgAudioMain[1].volume = 0;
     }
 }

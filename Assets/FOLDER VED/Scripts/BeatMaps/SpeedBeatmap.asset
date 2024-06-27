@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 311a3e780ebf8564282dcc8a75d0b780, type: 3}
-  m_Name: Beatmap_0
+  m_Name: SpeedBeatmap
   m_EditorClassIdentifier: 
-  beats: 01000101010001010100010101000100
+  beats: 01010000010100000101000001010000
