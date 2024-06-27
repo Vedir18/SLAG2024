@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.TerrainTools;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BeatManager : MonoBehaviour
 {
@@ -15,14 +16,17 @@ public class BeatManager : MonoBehaviour
     [SerializeField] private float strongSkillVolume;
 
     [Header("Healing")]
+    [SerializeField] private Sprite healingIcon;
     [SerializeField] private Beatmap healingBeatmap;
     [SerializeField] private AudioSource[] healingAudioTrack;
 
     [Header("Speed")]
+    [SerializeField] private Sprite speedIcon;
     [SerializeField] private Beatmap speedBeatmap;
     [SerializeField] private AudioSource[] speedAudioTrack;
 
     [Header("Damage")]
+    [SerializeField] private Sprite damageIcon;
     [SerializeField] private Beatmap damageBeatmap;
     [SerializeField] private AudioSource[] dmgAudioTrack;
 
@@ -32,6 +36,9 @@ public class BeatManager : MonoBehaviour
 
     [Header("UI Refs")]
     [SerializeField] private BeatUI _beatUI;
+    [SerializeField] private Image chosenInstrumentUI;
+    [SerializeField] private Image spare1UI;
+    [SerializeField] private Image spare2UI;
     private PlayerSkillManager _playerSkillManager;
 
     [Header("InputSettings")]
@@ -259,16 +266,25 @@ public class BeatManager : MonoBehaviour
                 currentBeatmap = healingBeatmap;
                 healingAudioTrack[0].volume = backgroundVolume;
                 healingAudioTrack[1].volume = backgroundVolume;
+                chosenInstrumentUI.sprite = healingIcon;
+                spare1UI.sprite = speedIcon;
+                spare2UI.sprite = damageIcon;
                 break;
             case 1:
                 currentBeatmap = speedBeatmap;
                 speedAudioTrack[0].volume = backgroundVolume;
                 speedAudioTrack[1].volume = backgroundVolume;
+                chosenInstrumentUI.sprite = speedIcon;
+                spare1UI.sprite = damageIcon;
+                spare2UI.sprite = healingIcon;
                 break;
             case 2:
                 currentBeatmap = damageBeatmap;
                 dmgAudioTrack[0].volume = backgroundVolume;
                 dmgAudioTrack[1].volume = backgroundVolume;
+                chosenInstrumentUI.sprite = damageIcon;
+                spare1UI.sprite = healingIcon;
+                spare2UI.sprite = speedIcon;
                 break;
         }
 

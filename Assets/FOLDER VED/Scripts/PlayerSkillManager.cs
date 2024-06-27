@@ -19,11 +19,17 @@ public class PlayerSkillManager : MonoBehaviour
     [SerializeField] private float damageSmall;
     [SerializeField] private float damageBig;
     [SerializeField] private GameObject skillVisual;
+    [SerializeField] private GameObject[] healInstruments;
+    [SerializeField] private GameObject[] speedInstruments;
+    [SerializeField] private GameObject[] dmgInstruments;
+    [SerializeField] private TrailRenderer trail;
     private Material skillMaterial;
+
 
     [SerializeField] private float boredomSpeed;
     private float healingExciteMeter, speedExciteMeter, damageExciteMeter;
     private int currentInstrument = -1;
+    public int CurrentInstrument => currentInstrument;
     private BeatManager beatManager;
     private int skillPerformance = 0;
     public int SkillPerformance => skillPerformance;
@@ -42,6 +48,7 @@ public class PlayerSkillManager : MonoBehaviour
         SwapInstrument(inputManager.InstrumentClicked);
         beatManager.ProcessTick(inputManager);
         ProcessSkill();
+        trail.enabled = currentInstrument == 1 && skillPerformance >= 1;
     }
 
     private void ModifySkillPerformance(int delta)
@@ -88,7 +95,7 @@ public class PlayerSkillManager : MonoBehaviour
             skillPerformance = 0;
             beatManager.SwapInstrument(currentInstrument);
             Color skillColor = Color.white;
-            switch(instrumentClick)
+            switch (instrumentClick)
             {
                 case 0:
                     skillColor = healColor;
@@ -100,6 +107,13 @@ public class PlayerSkillManager : MonoBehaviour
                     skillColor = damageColor;
                     break;
             }
+            healInstruments[0].SetActive(instrumentClick == 0);
+            healInstruments[1].SetActive(instrumentClick == 0);
+            speedInstruments[0].SetActive(instrumentClick == 1);
+            speedInstruments[1].SetActive(instrumentClick == 1);
+            dmgInstruments[0].SetActive(instrumentClick == 2);
+            dmgInstruments[1].SetActive(instrumentClick == 2);
+            dmgInstruments[2].SetActive(instrumentClick == 2);
             skillColor.a = inactiveAlpha;
             skillMaterial.color = skillColor;
         }
@@ -110,7 +124,7 @@ public class PlayerSkillManager : MonoBehaviour
         if (skillPerformance > 0)
         {
             Ally[] affected = FindAffectedAllies();
-            switch(currentInstrument)
+            switch (currentInstrument)
             {
                 case 0:
                     foreach (Ally ally in affected) ally.ModifyMotivated((skillPerformance == 1 ? healSmall : healBig) * Time.deltaTime);

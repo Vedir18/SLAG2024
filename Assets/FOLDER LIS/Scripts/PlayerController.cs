@@ -37,12 +37,13 @@ public class PlayerController : MonoBehaviour
         {
             _animator.SetBool("B_iswalking", false);
         }
+
         inputManager.UpdateInput();
         playerSkillManager.ProcessTick(inputManager);
     }
 
     private void FixedUpdate()
     {
-        movementManager.ProcessTick(inputManager);
+        movementManager.ProcessTick(inputManager, playerSkillManager.CurrentInstrument==1&&playerSkillManager.SkillPerformance>=1);
     }
 }
