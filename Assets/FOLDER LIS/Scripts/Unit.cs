@@ -62,7 +62,7 @@ public class Unit : MonoBehaviour
     {
  
     }
-    protected float GetDistanceToTarget()
+    protected float GetDistanceToEnemyTarget()
     {
         return Vector3.Distance(_rb.transform.position, EnemyTarget.transform.position);
     }
@@ -70,8 +70,12 @@ public class Unit : MonoBehaviour
     {
         return Vector3.Distance(_rb.transform.position, AllyTarget.transform.position);
     }
+    protected float GetDistanceToTarget(Vector3 Location)
+    {
+        return Vector3.Distance(_rb.transform.position, Location);
+    }
 
-   
+
     public virtual void Behave()
     {
     }

@@ -45,7 +45,7 @@ public class Ally : Unit
         else if(_state == UnitState.ChasingTarget)
         {
             Debug.Log("Chasing target");
-            if (GetDistanceToTarget() <= DistanceToTarget)
+            if (GetDistanceToEnemyTarget() <= DistanceToTarget)
             {
                 _state = UnitState.Attacking;
             }
@@ -60,7 +60,7 @@ public class Ally : Unit
         else if(_state == UnitState.Attacking)
         {
             Debug.Log("Attacking");
-            if (GetDistanceToTarget() > DistanceToAttack)
+            if (GetDistanceToEnemyTarget() > DistanceToAttack)
             {
                 _state = UnitState.ChasingTarget;
             }
