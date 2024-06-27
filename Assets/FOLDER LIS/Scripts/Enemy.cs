@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,11 +12,20 @@ public class Enemy : Unit
     // TODO: change this to animation time
     private float startedShoutingTime;
     private float animTimeToShout = 2;
-   
+
+    
+
     public event EnemyDeath OnEnemyDeath;
     [SerializeField] private Object _emptyTarget;
     [SerializeField] private float _speedWhenGoingToTheEdge = 100;
     private Vector3 _edgeTarget;
+    [Header("Wave vars")]
+    [SerializeField] private GameObject _buffWavePrefab;
+    [SerializeField] private GameObject _debuffWavePrefab;
+    [SerializeField] private float _waveLifetime = 5;
+    [SerializeField] private float _waveRange = 20;
+    [SerializeField] private bool _changeBrave;
+    [SerializeField] private bool _changeDedicated;
     private enum EnemyState
     {
         DeadShouting,
@@ -115,14 +125,16 @@ public class Enemy : Unit
         }
         else if (_state == UnitState.UnitCustom)
         {
+            Debug.Log(_enemyState);
             if(_enemyState == EnemyState.DeadShouting)
             {
-                // playing animation
+                // TODO: playing animation
                 if (Time.time > startedShoutingTime + animTimeToShout)
                 {
-                    Debug.Log("stopped shouting, now going to the edge");
                     _enemyState = EnemyState.GoingToTheEdge;
                     _edgeTarget = Manager.FindNearestEdge(_rb.transform.position);
+                    Debug.Log("stopped shouting, now going to the edge");
+                    SpawnBuffWave();
                 }
             }
             else if (_enemyState == EnemyState.GoingToTheEdge)
@@ -142,6 +154,17 @@ public class Enemy : Unit
             }
         }
     }
+
+    private void SpawnBuffWave()
+    {
+        EnemyWave newWave = Instantiate(_buffWavePrefab).GetComponent<EnemyWave>();
+        newWave.Initialize(transform.position, _waveLifetime, _waveRange, _changeBrave, _changeDedicated);
+    }
+    public void SpawnDebuffWave()
+    {
+        EnemyWave newWave = Instantiate(_debuffWavePrefab).GetComponent<EnemyWave>();
+        newWave.Initialize(transform.position, _waveLifetime, _waveRange, _changeBrave, _changeDedicated);
+    }    
     private void ChangeTarget()
     {
         AllyTarget = null;

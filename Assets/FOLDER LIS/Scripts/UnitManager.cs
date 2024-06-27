@@ -169,20 +169,11 @@ public class UnitManager : MonoBehaviour
     {
         for (int i = 0; i < _enemies.Count; i++)
         {
-            Debug.Log("enemy[" + i + "]" + _enemies[i]);
-        }
-        Debug.Log("and after");
-        for (int i = 0; i < _enemies.Count; i++)
-        {
             if (_enemies[i].Enemy.IsDead)
             {
                 Enemy enemyToDestroy = _enemies[i].Enemy;
                 _enemies.RemoveAt(i);
             }
-        }
-        for (int i = 0; i < _enemies.Count; i++)
-        {
-            Debug.Log("enemy[" + i + "]" + _enemies[i]);
         }
     }
     public void RemoveDeadAlly()
@@ -240,7 +231,8 @@ public class UnitManager : MonoBehaviour
                 _lastShoutTime = Time.time;
                 foreach(Enemy enemy in _deadEnemies)
                 {
-                    Debug.Log("Enemy shouts!");
+                    enemy.SpawnDebuffWave();
+                    Debug.Log("dead debuf wave");
                 }
             }
         }
