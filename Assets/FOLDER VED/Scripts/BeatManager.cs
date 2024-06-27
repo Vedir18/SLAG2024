@@ -67,6 +67,7 @@ public class BeatManager : MonoBehaviour
         {
             SingleBeat newBeat = Instantiate(beatPrefab).GetComponent<SingleBeat>();
             newBeat.gameObject.SetActive(false);
+            newBeat.transform.parent = transform;
             spareBeats.Add(newBeat);
         }
 
