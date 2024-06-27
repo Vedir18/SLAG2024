@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
 
         playerSkillManager.Initialize(FindObjectOfType<BeatManager>());
         movementManager.Initialize();
+        _animator = GetComponent<Animator>();
     }
 
     void Update()
