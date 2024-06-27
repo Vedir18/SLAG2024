@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
@@ -53,7 +54,6 @@ public class Unit : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         _currentMotivation = maxMotivation;
         _currentDedication = baseDedicated * dedicatedMultiplier;
         Emotions.Add(Emotion.Motivated, 100.0f);
@@ -69,15 +69,11 @@ public class Unit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        TimeT += Time.deltaTime;
-
-        if (TimeT > 2.0f && !Updated)
-        {
-            SetChasing(FindObjectOfType<PlayerController>().transform);
-            Updated = true;
-        }
+ 
+    }
     protected float GetDistanceToTarget()
-        {
+
+{
         return Vector3.Distance(_rb.transform.position, EnemyTarget.transform.position);
     }
 

@@ -33,8 +33,8 @@ public class Enemy : Unit
     public void Die()
     {
         Debug.Log("Enemy died. Invoking event..");
-        OnEnemyDeath?.Invoke();
         IsDead = true;
+        OnEnemyDeath?.Invoke();
     }
     public void DestroyEnemy()
     {
