@@ -31,16 +31,13 @@ public class Unit : MonoBehaviour
     public Enemy EnemyTarget;
     public Ally AllyTarget;
 
-<<<<<<< HEAD
     protected Animator animator;
-=======
     [Header("Visual")]
     [SerializeField] private SkinnedMeshRenderer _hatRenderer;
     [SerializeField] private SkinnedMeshRenderer _bodyRenderer;
     private Material _unitMaterial1, _unitMaterial2;
     [SerializeField] private TrailRenderer _lineRenderer;
 
->>>>>>> 3609426cd90e25ab1bf7019b10d648fbb8e0b88c
 
     protected enum UnitState
     {
