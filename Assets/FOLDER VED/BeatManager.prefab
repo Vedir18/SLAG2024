@@ -1532,8 +1532,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8946652355625631229}
   - component: {fileID: 8370621967801138704}
-  - component: {fileID: 3524792617494594048}
-  - component: {fileID: 5170372674527187675}
   m_Layer: 0
   m_Name: BeatManager
   m_TagString: Untagged
@@ -1613,31 +1611,6 @@ MonoBehaviour:
   spareBeats: []
   beatCount: 50
   CurrentLoop: 0
---- !u!114 &3524792617494594048
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7098505283985991574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8ead06ced688ed418dd670820ee945a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boredomSpeed: 0
---- !u!114 &5170372674527187675
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7098505283985991574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec49f43a11adb4143be930e2af4c4335, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7323600146648635203
 GameObject:
   m_ObjectHideFlags: 0

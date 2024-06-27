@@ -4,27 +4,28 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private Vector2 input;
-    private Rigidbody _rb;
-    [SerializeField] private float speed = 1;
+    [SerializeField] private InputManager inputManager;
+    [SerializeField] private PlayerSkillManager playerSkillManager;
+    [SerializeField] private MovementManager movementManager;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        _rb = GetComponent<Rigidbody>();
+        inputManager = GetComponent<InputManager>();
+        playerSkillManager = GetComponent<PlayerSkillManager>();
+        movementManager = GetComponent<MovementManager>();
+
+        playerSkillManager.Initialize(FindObjectOfType<BeatManager>());
+        movementManager.Initialize();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        float x = Input.GetAxisRaw("Horizontal");
-        float y = Input.GetAxisRaw("Vertical");
-        input = new Vector2(x, y);
-        input.Normalize();
+        inputManager.UpdateInput();
+        playerSkillManager.ProcessTick(inputManager);
     }
 
     private void FixedUpdate()
     {
-        _rb.velocity = new Vector3(input.x, 0, input.y) * speed;
+        movementManager.ProcessTick(inputManager);
     }
 }

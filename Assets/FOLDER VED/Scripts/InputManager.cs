@@ -10,8 +10,11 @@ public class InputManager : MonoBehaviour
     private bool[] instrumentClick = new bool[3];
     private bool[] clicked = new bool[4];
     private bool[] wasClicked = new bool[4];
+    private Vector2 movementInput = Vector2.zero;
+
     public bool Clicked => IsInputClicked();
     public bool Held => IsInputHeld();
+    public Vector2 MovementInput => movementInput.normalized;
 
 
     private bool IsInputClicked()
@@ -56,5 +59,7 @@ public class InputManager : MonoBehaviour
         instrumentClick[0] = Input.GetKeyDown(KeyCode.Alpha1);
         instrumentClick[1] = Input.GetKeyDown(KeyCode.Alpha2);
         instrumentClick[2] = Input.GetKeyDown(KeyCode.Alpha3);
+
+        movementInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
     }
 }
