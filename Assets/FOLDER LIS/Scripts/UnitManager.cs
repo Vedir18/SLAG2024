@@ -91,9 +91,14 @@ public class UnitManager : MonoBehaviour
             }
             }
         
-        if (saved == -1)
+        if (saved == -1 && secondChoice != -1)
         {
             saved = secondChoice;
+        }
+        else if(secondChoice == -1)
+        {
+            Debug.Log("You won!");
+            return null;
         }
         _enemies[saved].AddAttacker();
 
