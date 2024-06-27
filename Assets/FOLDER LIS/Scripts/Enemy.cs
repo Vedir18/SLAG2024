@@ -12,7 +12,13 @@ public class Enemy : Unit
     // Start is called before the first frame update
     void Start()
     {
-        
+        _currentMotivation = 100;
+        _currentDedication = baseDedicated * dedicatedMultiplier;
+        _state = UnitState.ChoosingTarget;
+        _lastAttack = Time.time - _attackCooldown;
+        _rb = GetComponent<Rigidbody>();
+
+        Manager = FindObjectOfType<UnitManager>();
     }
 
     // Update is called once per frame
@@ -23,8 +29,8 @@ public class Enemy : Unit
 
     public override void Attacked()
     {
-        _health = _health - 1;
-        if(_health <= 0)
+        _currentMotivation = _currentMotivation - 10;
+        if(_currentMotivation <= 0)
         {
             Die();
         }
@@ -43,6 +49,52 @@ public class Enemy : Unit
   
     public override void Behave()
     {
-        // 
+        if (_state == UnitState.ChoosingTarget)
+        {
+            // choose target
+            AllyTarget = Manager.GetNearestAlly(_rb.transform.position);
+            if (AllyTarget != null)
+            {
+                _state = UnitState.ChasingTarget;
+                AllyTarget.OnAllyDeath += ChangeTarget;
+            }
+            else
+            {
+                // We probably just won
+                _state = UnitState.Idle;
+            }
+        }
+        else if (_state == UnitState.ChasingTarget)
+        {
+            if (GetDistanceToAllyTarget() <= DistanceToTarget)
+            {
+                _state = UnitState.Attacking;
+            }
+            else
+            {
+                GoTo(AllyTarget.transform.position, _currentDedication);
+            }
+            // check if we already got to the target (DistToTarget)
+            // if we did, change state to attacking
+            // if not, keep chasing (go to our target)
+        }
+        else if (_state == UnitState.Attacking)
+        {
+            if (GetDistanceToAllyTarget() > DistanceToAttack)
+            {
+                _state = UnitState.ChasingTarget;
+            }
+            else if (Time.time > _lastAttack + _attackCooldown)
+            {
+                _lastAttack = Time.time;
+                AllyTarget.Attacked();
+                //Attack();
+            }
+        }
+    }
+    private void ChangeTarget()
+    {
+        AllyTarget = null;
+        _state = UnitState.ChoosingTarget;
     }
 }

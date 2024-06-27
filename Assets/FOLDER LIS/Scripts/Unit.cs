@@ -24,13 +24,14 @@ public class Unit : MonoBehaviour
     protected float _currentBrave;
 
     [SerializeField] protected float baseDedicated = 100;
-    [SerializeField] protected float dedicatedMultiplier = 0.1f;
+    [SerializeField] protected float dedicatedMultiplier = 0.01f;
     protected float _currentDedication;
 
     [SerializeField] protected float _attackCooldown = 10.0f;
     protected float _lastAttack;
 
     public Enemy EnemyTarget;
+    public Ally AllyTarget;
 
 
     protected enum UnitState
@@ -62,9 +63,12 @@ public class Unit : MonoBehaviour
  
     }
     protected float GetDistanceToTarget()
-
-{
+    {
         return Vector3.Distance(_rb.transform.position, EnemyTarget.transform.position);
+    }
+    protected float GetDistanceToAllyTarget()
+    {
+        return Vector3.Distance(_rb.transform.position, AllyTarget.transform.position);
     }
 
    

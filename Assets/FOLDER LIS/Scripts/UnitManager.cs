@@ -104,7 +104,39 @@ public class UnitManager : MonoBehaviour
 
         return _enemies[saved].Enemy;
     }
-    
+    public Ally GetNearestAlly(Vector3 Location)
+    {
+        // TODO: check for errors (out of array bounds, no enemies left, etc)
+        float minDistance = 999;
+        int saved = -1;
+        int secondChoice = -1;
+        for (int i = 0; i < _allies.Count; i++)
+        {
+            float currentDistance = Vector3.Distance(Location, _allies[i].Ally.transform.position);
+            if (currentDistance < minDistance)
+            {
+                if (_allies[i].CurrentAttackers < 2)
+                {
+                    saved = i;
+                    minDistance = currentDistance;
+                }
+                secondChoice = i;
+            }
+        }
+
+        if (saved == -1 && secondChoice != -1)
+        {
+            saved = secondChoice;
+        }
+        else if (secondChoice == -1)
+        {
+            Debug.Log("You won!");
+            return null;
+        }
+        _allies[saved].AddAttacker();
+
+        return _allies[saved].Ally;
+    }
     public void RemoveDeadEnemy()
     {
         for (int i = 0; i < _enemies.Count; i++)
