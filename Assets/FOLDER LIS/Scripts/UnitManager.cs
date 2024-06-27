@@ -1,14 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
 public class UnitManager : MonoBehaviour
 {
     public int MaxAttackers = 2;
     private List<EnemyData> _enemies = new List<EnemyData>();
+    private List<Enemy> _deadEnemies = new List<Enemy>();
 
     private List<AllyData> _allies = new List<AllyData>();
+    private List<EdgeData> _edgeTargets = new List<EdgeData>();
+    public bool FirstEnemyDied = false;
+    [SerializeField] private float _shoutingCooldown = 3;
+    private float _lastShoutTime;
 
     private class EnemyData
     {
@@ -40,6 +47,21 @@ public class UnitManager : MonoBehaviour
             CurrentAttackers = CurrentAttackers + 1;
         }
     }
+    private class EdgeData
+    {
+        public GameObject EdgeObject;
+        public bool IsTaken;
+        public EdgeData(GameObject obj)
+        {
+            EdgeObject = obj;
+            IsTaken = false;
+        }
+
+        public void TakePlace()
+        {
+            IsTaken = true;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -52,7 +74,7 @@ public class UnitManager : MonoBehaviour
         for(int i=0; i< _enemies.Count; i++)
         {
             _enemies[i].Enemy.OnEnemyDeath += RemoveDeadEnemy;
-    }
+        }
 
         Object[] objectsAllies = FindObjectsOfType<Ally>();
         foreach (Object obj in objectsAllies)
@@ -62,6 +84,12 @@ public class UnitManager : MonoBehaviour
         for (int i = 0; i < _allies.Count; i++)
         {
             _allies[i].Ally.OnAllyDeath += RemoveDeadAlly;
+        }
+
+        GameObject[] edgeObjects = GameObject.FindGameObjectsWithTag("Edge");
+        foreach (GameObject obj in edgeObjects)
+        {
+            _edgeTargets.Add(new EdgeData(obj));
         }
     }
 
@@ -150,7 +178,6 @@ public class UnitManager : MonoBehaviour
             {
                 Enemy enemyToDestroy = _enemies[i].Enemy;
                 _enemies.RemoveAt(i);
-                enemyToDestroy.DestroyEnemy();
             }
         }
         for (int i = 0; i < _enemies.Count; i++)
@@ -167,6 +194,65 @@ public class UnitManager : MonoBehaviour
                 Ally allyToDestroy = _allies[i].Ally;
                 _allies.Remove(_allies[i]);
             }
+        }
+    }
+    public Vector3 FindNearestEdge(Vector3 Location)
+    {
+        // TODO: check for errors (out of array bounds, no enemies left, etc)
+        float minDistance = 999;
+        int saved = -1;
+        int secondChoice = -1;
+        for (int i = 0; i < _edgeTargets.Count; i++)
+        {
+            float currentDistance = Vector3.Distance(Location, _edgeTargets[i].EdgeObject.transform.position);
+            if (currentDistance < minDistance)
+            {
+                if (!_edgeTargets[i].IsTaken)
+                {
+                    saved = i;
+                    minDistance = currentDistance;
+                }
+                secondChoice = i;
+            }
+        }
+
+        if (saved == -1 && secondChoice != -1)
+        {
+            saved = secondChoice;
+        }
+        else if (secondChoice == -1)
+        {
+            Debug.Log("No available targets to go to");
+            return new Vector3(0, 0, 0);
+        }
+        _edgeTargets[saved].TakePlace();
+
+        return _edgeTargets[saved].EdgeObject.transform.position;
+    }
+
+    // TODO: check?
+    public void FixedUpdate()
+    {
+        if(FirstEnemyDied)
+        {
+            if(Time.time > _lastShoutTime + _shoutingCooldown)
+            {
+                _lastShoutTime = Time.time;
+                foreach(Enemy enemy in _deadEnemies)
+                {
+                    Debug.Log("Enemy shouts!");
+                }
+            }
+        }
+    }
+    public void AddShoutingEnemy(Enemy newShoutingEnemy)
+    {
+        _deadEnemies.Add(newShoutingEnemy);
+
+        if (!FirstEnemyDied)
+        {
+            FirstEnemyDied = true;
+            _lastShoutTime = Time.time;
         }
     }
 
