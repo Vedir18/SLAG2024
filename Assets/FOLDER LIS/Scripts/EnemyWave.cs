@@ -8,17 +8,16 @@ public class EnemyWave : MonoBehaviour
     private float _age = 0;
     private float _lifetime;
     private float _maxRadius;
+    protected bool changeBrave;
+    protected bool changeDedicated;
 
-    private void Start()
-    {
-        Initialize(Vector3.zero, 5, 10);
-    }
-
-    public void Initialize(Vector3 position, float lifetime, float maxRadius)
+    public void Initialize(Vector3 position, float lifetime, float maxRadius, bool changeB, bool changeD)
     {
         transform.position = position;
         _lifetime = lifetime;
         _maxRadius = maxRadius;
+        changeBrave = changeB;
+        changeDedicated = changeD;
     }
 
     // Update is called once per frame
@@ -34,6 +33,15 @@ public class EnemyWave : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
+    {
+        Unit HitUnit = other.GetComponent<Unit>();
+        if(HitUnit != null)
+        {
+            DoContact(HitUnit);
+        }
+    }
+
+    protected virtual void DoContact(Unit unit)
     {
         
     }

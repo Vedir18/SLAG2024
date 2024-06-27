@@ -27,13 +27,11 @@ public class Ally : Unit
     {
         if(_state == UnitState.ChoosingTarget)
         {
-            Debug.Log("Choosing new target..");
             // choose target
             EnemyTarget = Manager.GetNearestEnemy(_rb.transform.position);
             if(EnemyTarget != null )
             {
                 _state = UnitState.ChasingTarget;
-                Debug.Log("Chasing new target!");
                 EnemyTarget.OnEnemyDeath += ChangeTarget;
             }
             else
@@ -44,7 +42,6 @@ public class Ally : Unit
         }
         else if(_state == UnitState.ChasingTarget)
         {
-            Debug.Log("Chasing target");
             if (GetDistanceToEnemyTarget() <= DistanceToTarget)
             {
                 _state = UnitState.Attacking;
@@ -59,7 +56,6 @@ public class Ally : Unit
         }
         else if(_state == UnitState.Attacking)
         {
-            Debug.Log("Attacking");
             if (GetDistanceToEnemyTarget() > DistanceToAttack)
             {
                 _state = UnitState.ChasingTarget;
@@ -68,16 +64,13 @@ public class Ally : Unit
             {
                 _lastAttack = Time.time;
                 EnemyTarget.Attacked();
-                Debug.Log("Attack");
                 //Attack();
             }
-            Debug.Log("End Attacking");
         }
     }
 
     private void ChangeTarget()
     {
-        Debug.Log("Had to change target");
         EnemyTarget = null;
         _state = UnitState.ChoosingTarget;
     }
