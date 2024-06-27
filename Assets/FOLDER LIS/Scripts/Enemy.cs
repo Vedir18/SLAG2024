@@ -69,6 +69,7 @@ public class Enemy : Unit
         _state = UnitState.UnitCustom;
         _enemyState = EnemyState.DeadShouting;
         startedShoutingTime = Time.time;
+        GetComponent<Collider>().enabled = false;
 
         // 1. Enemy shouts after death, adding anger to other enemies;
         // 2. Enemy goes to the edge of the map
@@ -146,6 +147,7 @@ public class Enemy : Unit
                     Debug.Log("Im on the edge");
                     _enemyState = EnemyState.RegularlyShouting;
                     Manager.AddShoutingEnemy(this);
+                    _rb.velocity = Vector3.zero;
                 }
             }
             else if (_enemyState == EnemyState.RegularlyShouting)
