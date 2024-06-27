@@ -183,7 +183,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: -876546973899608171, guid: b98242d81bfb80f47a99a6bc43697f8c, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -299,6 +299,9 @@ MonoBehaviour:
   dedicatedMultiplier: 0.1
   _attackCooldown: 10
   EnemyTarget: {fileID: 0}
+  AllyTarget: {fileID: 0}
+  _emptyTarget: {fileID: 0}
+  _speedWhenGoingToTheEdge: 100
 --- !u!135 &764814580
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -456,6 +459,7 @@ MonoBehaviour:
   dedicatedMultiplier: 0.1
   _attackCooldown: 10
   EnemyTarget: {fileID: 0}
+  AllyTarget: {fileID: 0}
 --- !u!135 &802667552
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -552,6 +556,7 @@ GameObject:
   m_Component:
   - component: {fileID: 974458416}
   - component: {fileID: 974458415}
+  - component: {fileID: 974458417}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -636,6 +641,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &974458417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974458414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &1192228043
 GameObject:
   m_ObjectHideFlags: 0
@@ -707,6 +735,7 @@ MonoBehaviour:
   dedicatedMultiplier: 0.1
   _attackCooldown: 10
   EnemyTarget: {fileID: 0}
+  AllyTarget: {fileID: 0}
 --- !u!135 &1192228046
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -864,6 +893,9 @@ MonoBehaviour:
   dedicatedMultiplier: 0.1
   _attackCooldown: 10
   EnemyTarget: {fileID: 0}
+  AllyTarget: {fileID: 0}
+  _emptyTarget: {fileID: 0}
+  _speedWhenGoingToTheEdge: 100
 --- !u!135 &1658146469
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1190,6 +1222,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BeatManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8370621967801138704, guid: 7cd9eab318ba99740955df43502d7440,
+        type: 3}
+      propertyPath: maxBeatDistance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8927935097504746388, guid: 7cd9eab318ba99740955df43502d7440,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8927935097504746388, guid: 7cd9eab318ba99740955df43502d7440,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -26.5
       objectReference: {fileID: 0}
     - target: {fileID: 8946652355625631229, guid: 7cd9eab318ba99740955df43502d7440,
         type: 3}

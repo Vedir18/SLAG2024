@@ -41,7 +41,6 @@ public class BeatManager : MonoBehaviour
 
     [Header("MusicSettings")]
     [SerializeField] private float bpm;
-    [SerializeField] private int beatsPerPhrase;
 
     [Header("Inspect")]
     [SerializeField] private Beatmap currentBeatmap;
