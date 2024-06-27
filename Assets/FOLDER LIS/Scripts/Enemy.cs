@@ -5,6 +5,9 @@ using UnityEngine;
 
 
 public delegate void EnemyDeath();
+
+public delegate void EnemyReachedEdge();
+
 public class Enemy : Unit
 {
     // TODO: change this to animation time
@@ -12,6 +15,7 @@ public class Enemy : Unit
     private float animTimeToShout = 2;
    
     public event EnemyDeath OnEnemyDeath;
+    public event EnemyReachedEdge OnEnemyReachedEdge;
     [SerializeField] private Object _emptyTarget;
     [SerializeField] private float _speedWhenGoingToTheEdge = 100;
     private Vector3 _edgeTarget;
@@ -130,12 +134,14 @@ public class Enemy : Unit
                 GoTo(_edgeTarget, _speedWhenGoingToTheEdge);
                 if(GetDistanceToTarget(_edgeTarget) < 0.1f)
                 {
+                    Debug.Log("Im on the edge");
                     _enemyState = EnemyState.RegularlyShouting;
-                    Debug.Log("Shouuuting!");
+                    Manager.AddShoutingEnemy(this);
                 }
             }
             else if (_enemyState == EnemyState.RegularlyShouting)
             {
+
             }
         }
     }

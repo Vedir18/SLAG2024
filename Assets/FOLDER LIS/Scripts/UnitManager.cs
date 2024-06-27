@@ -9,10 +9,13 @@ public class UnitManager : MonoBehaviour
 {
     public int MaxAttackers = 2;
     private List<EnemyData> _enemies = new List<EnemyData>();
-    private List<EnemyData> _deadEnemies = new List<EnemyData>();
+    private List<Enemy> _deadEnemies = new List<Enemy>();
 
     private List<AllyData> _allies = new List<AllyData>();
     private List<EdgeData> _edgeTargets = new List<EdgeData>();
+    public bool FirstEnemyDied = false;
+    [SerializeField] private float _shoutingCooldown = 3;
+    private float _lastShoutTime;
 
     private class EnemyData
     {
@@ -175,7 +178,6 @@ public class UnitManager : MonoBehaviour
             {
                 Enemy enemyToDestroy = _enemies[i].Enemy;
                 _enemies.RemoveAt(i);
-                //enemyToDestroy.DestroyEnemy();
             }
         }
         for (int i = 0; i < _enemies.Count; i++)
@@ -226,6 +228,32 @@ public class UnitManager : MonoBehaviour
         _edgeTargets[saved].TakePlace();
 
         return _edgeTargets[saved].EdgeObject.transform.position;
+    }
+
+    // TODO: check?
+    public void FixedUpdate()
+    {
+        if(FirstEnemyDied)
+        {
+            if(Time.time > _lastShoutTime + _shoutingCooldown)
+            {
+                _lastShoutTime = Time.time;
+                foreach(Enemy enemy in _deadEnemies)
+                {
+                    Debug.Log("Enemy shouts!");
+                }
+            }
+        }
+    }
+    public void AddShoutingEnemy(Enemy newShoutingEnemy)
+    {
+        _deadEnemies.Add(newShoutingEnemy);
+
+        if (!FirstEnemyDied)
+        {
+            FirstEnemyDied = true;
+            _lastShoutTime = Time.time;
+        }
     }
 
 }
