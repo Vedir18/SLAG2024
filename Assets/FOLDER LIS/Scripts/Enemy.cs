@@ -13,7 +13,7 @@ public class Enemy : Unit
     private float startedShoutingTime;
     private float animTimeToShout = 2;
 
-    
+
 
     public event EnemyDeath OnEnemyDeath;
     [SerializeField] private Object _emptyTarget;
@@ -36,6 +36,7 @@ public class Enemy : Unit
     // Start is called before the first frame update
     void Start()
     {
+        SetMaterials();
         _currentMotivation = 100;
         _currentDedication = baseDedicated * dedicatedMultiplier;
         _state = UnitState.ChoosingTarget;
@@ -48,22 +49,16 @@ public class Enemy : Unit
         animator = gameObject.GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public override void Attacked()
     {
         animator.SetTrigger("T_hit");
         _currentMotivation = _currentMotivation - 10;
-        if(_currentMotivation <= 0)
+        if (_currentMotivation <= 0)
         {
             Die();
         }
     }
-        
+
     public void Die()
     {
         Debug.Log("Enemy died. Invoking event..");
@@ -72,6 +67,7 @@ public class Enemy : Unit
         _state = UnitState.UnitCustom;
         _enemyState = EnemyState.DeadShouting;
         startedShoutingTime = Time.time;
+        GetComponent<Collider>().enabled = false;
 
         // 1. Enemy shouts after death, adding anger to other enemies;
         // 2. Enemy goes to the edge of the map
@@ -81,7 +77,7 @@ public class Enemy : Unit
     {
         Destroy(gameObject);
     }
-  
+
     public override void Behave()
     {
         if (_state == UnitState.ChoosingTarget)
@@ -129,7 +125,7 @@ public class Enemy : Unit
         else if (_state == UnitState.UnitCustom)
         {
             Debug.Log(_enemyState);
-            if(_enemyState == EnemyState.DeadShouting)
+            if (_enemyState == EnemyState.DeadShouting)
             {
                 // TODO: playing animation
                 if (Time.time > startedShoutingTime + animTimeToShout)
@@ -144,11 +140,12 @@ public class Enemy : Unit
             {
 
                 GoTo(_edgeTarget, _speedWhenGoingToTheEdge);
-                if(GetDistanceToTarget(_edgeTarget) < 0.1f)
+                if (GetDistanceToTarget(_edgeTarget) < 0.1f)
                 {
                     Debug.Log("Im on the edge");
                     _enemyState = EnemyState.RegularlyShouting;
                     Manager.AddShoutingEnemy(this);
+                    _rb.velocity = Vector3.zero;
                 }
             }
             else if (_enemyState == EnemyState.RegularlyShouting)
@@ -161,13 +158,13 @@ public class Enemy : Unit
     private void SpawnBuffWave()
     {
         EnemyWave newWave = Instantiate(_buffWavePrefab).GetComponent<EnemyWave>();
-        newWave.Initialize(transform.position, _waveLifetime, _waveRange, _changeBrave, _changeDedicated);
+        newWave.Initialize(transform.position + 0.05f * Vector3.up, _waveLifetime, _waveRange, _changeBrave, _changeDedicated);
     }
     public void SpawnDebuffWave()
     {
         EnemyWave newWave = Instantiate(_debuffWavePrefab).GetComponent<EnemyWave>();
-        newWave.Initialize(transform.position, _waveLifetime, _waveRange, _changeBrave, _changeDedicated);
-    }    
+        newWave.Initialize(transform.position + 0.05f * Vector3.up, _waveLifetime, _waveRange, _changeBrave, _changeDedicated);
+    }
     private void ChangeTarget()
     {
         AllyTarget = null;

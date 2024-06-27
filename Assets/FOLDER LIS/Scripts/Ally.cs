@@ -11,8 +11,10 @@ public class Ally : Unit
 {
     
     public event AllyDeath OnAllyDeath;
+
     void Start()
     {
+        SetMaterials();
         _currentMotivation = maxMotivation;
         _currentDedication = baseDedicated * dedicatedMultiplier;
         _state = UnitState.ChoosingTarget;
@@ -41,6 +43,7 @@ public class Ally : Unit
             {
                 // We probably just won
                 _state = UnitState.Idle;
+                _rb.velocity = Vector3.zero; ;
             }
         }
         else if(_state == UnitState.ChasingTarget)

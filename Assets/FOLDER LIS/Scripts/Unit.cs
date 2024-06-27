@@ -31,7 +31,16 @@ public class Unit : MonoBehaviour
     public Enemy EnemyTarget;
     public Ally AllyTarget;
 
+<<<<<<< HEAD
     protected Animator animator;
+=======
+    [Header("Visual")]
+    [SerializeField] private SkinnedMeshRenderer _hatRenderer;
+    [SerializeField] private SkinnedMeshRenderer _bodyRenderer;
+    private Material _unitMaterial1, _unitMaterial2;
+    [SerializeField] private TrailRenderer _lineRenderer;
+
+>>>>>>> 3609426cd90e25ab1bf7019b10d648fbb8e0b88c
 
     protected enum UnitState
     {
@@ -45,8 +54,9 @@ public class Unit : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
+        SetMaterials();
         _currentMotivation = maxMotivation;
         _currentDedication = baseDedicated * dedicatedMultiplier;
         _state = UnitState.ChoosingTarget;
@@ -57,11 +67,25 @@ public class Unit : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
     }
 
+    protected void SetMaterials()
+    {
+        _unitMaterial1 = _bodyRenderer.material;
+        _unitMaterial2 = _hatRenderer.material;
+        Debug.Log($"Object: {gameObject.name} materials are 1: {_unitMaterial1} 2: {_unitMaterial2}");
+    }
+
     // Update is called once per frame
     void Update()
     {
- 
+        Debug.Log($"CB: {_currentBrave / 100f} | CM: {_currentMotivation / maxMotivation}");
+        _unitMaterial1.SetFloat("_outline", _currentBrave / 100f);
+        _unitMaterial1.SetFloat("_damaged", 1 - _currentMotivation / maxMotivation);
+        _unitMaterial2.SetFloat("_outline", _currentBrave / 100f);
+        _unitMaterial2.SetFloat("_damaged", 1 - _currentMotivation / maxMotivation);
+        _lineRenderer.emitting = _currentMotivation > 10;
+
     }
+
     protected float GetDistanceToEnemyTarget()
     {
         return Vector3.Distance(_rb.transform.position, EnemyTarget.transform.position);
@@ -82,7 +106,7 @@ public class Unit : MonoBehaviour
 
     public void GoTo(Vector3 location, float speed)
     {
-        
+
         Vector3 direction = location - _rb.transform.position;
         direction = direction.normalized * speed;
         _rb.velocity = new Vector3(direction.x, 2, direction.z);
@@ -95,23 +119,23 @@ public class Unit : MonoBehaviour
 
     public virtual void Attacked()
     {
-        
+
     }
 
     public void ModifyMotivated(float delta)
     {
         _currentMotivation += delta;
-        Mathf.Clamp(_currentMotivation, 0, maxMotivation);
+        _currentMotivation = Mathf.Clamp(_currentMotivation, 0, maxMotivation);
     }
     public void ModifyBrave(float delta)
     {
         _currentBrave += delta;
-        Mathf.Clamp(_currentBrave, 0, 100);
+        _currentBrave = Mathf.Clamp(_currentBrave, 0, 100);
     }
     public void ModifyDedicated(float delta)
     {
         _currentDedication += delta;
-        Mathf.Clamp(_currentDedication, 0, 100);
+        _currentDedication = Mathf.Clamp(_currentDedication, 0, 100);
     }
     public void Shout()
     {
