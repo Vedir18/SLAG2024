@@ -6,8 +6,6 @@ using UnityEngine;
 
 public delegate void EnemyDeath();
 
-public delegate void EnemyReachedEdge();
-
 public class Enemy : Unit
 {
     // TODO: change this to animation time
@@ -15,7 +13,6 @@ public class Enemy : Unit
     private float animTimeToShout = 2;
    
     public event EnemyDeath OnEnemyDeath;
-    public event EnemyReachedEdge OnEnemyReachedEdge;
     [SerializeField] private Object _emptyTarget;
     [SerializeField] private float _speedWhenGoingToTheEdge = 100;
     private Vector3 _edgeTarget;
