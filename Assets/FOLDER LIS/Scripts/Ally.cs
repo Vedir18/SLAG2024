@@ -9,14 +9,15 @@ using UnityEngine;
 public delegate void AllyDeath();
 public class Ally : Unit
 {
-    
+
     public event AllyDeath OnAllyDeath;
 
     void Start()
     {
         SetMaterials();
+        _currentBrave = 0;
         _currentMotivation = maxMotivation;
-        _currentDedication = baseDedicated * dedicatedMultiplier;
+        _currentDedication = baseDedicated;
         _state = UnitState.ChoosingTarget;
         _lastAttack = Time.time - _attackCooldown;
         _rb = GetComponent<Rigidbody>();
@@ -26,15 +27,15 @@ public class Ally : Unit
         animator = gameObject.GetComponent<Animator>();
     }
 
-  
+
     public override void Behave()
     {
-        if(_state == UnitState.ChoosingTarget)
+        if (_state == UnitState.ChoosingTarget)
         {
             animator.SetBool("B_iswalking", false);
             // choose target
             EnemyTarget = Manager.GetNearestEnemy(_rb.transform.position);
-            if(EnemyTarget != null )
+            if (EnemyTarget != null)
             {
                 _state = UnitState.ChasingTarget;
                 EnemyTarget.OnEnemyDeath += ChangeTarget;
@@ -46,7 +47,7 @@ public class Ally : Unit
                 _rb.velocity = Vector3.zero; ;
             }
         }
-        else if(_state == UnitState.ChasingTarget)
+        else if (_state == UnitState.ChasingTarget)
         {
             animator.SetBool("B_iswalking", true);
             if (GetDistanceToEnemyTarget() <= DistanceToTarget)
@@ -55,22 +56,22 @@ public class Ally : Unit
             }
             else
             {
-                GoTo(EnemyTarget.transform.position, _currentDedication);
+                GoTo(EnemyTarget.transform.position, 1);
             }
             // check if we already got to the target (DistToTarget)
-                // if we did, change state to attacking
-                // if not, keep chasing (go to our target)
+            // if we did, change state to attacking
+            // if not, keep chasing (go to our target)
         }
-        else if(_state == UnitState.Attacking)
+        else if (_state == UnitState.Attacking)
         {
             if (GetDistanceToEnemyTarget() > DistanceToAttack)
             {
                 _state = UnitState.ChasingTarget;
             }
-            else if(Time.time > _lastAttack + _attackCooldown)
+            else if (Time.time > _lastAttack + _attackCooldown)
             {
                 _lastAttack = Time.time;
-                EnemyTarget.Attacked();
+                EnemyTarget.Attacked(_currentBrave/5 + baseBrave);
                 animator.SetTrigger("T_kick");
                 //Attack();
             }
@@ -82,11 +83,11 @@ public class Ally : Unit
         EnemyTarget = null;
         _state = UnitState.ChoosingTarget;
     }
-    public override void Attacked()
+    public override void Attacked(float damage)
     {
-        _currentMotivation -= 10;
+        ModifyMotivated(-damage);
         if (_currentMotivation <= 0)
-    {
+        {
             OnAllyDeath?.Invoke();
         }
     }

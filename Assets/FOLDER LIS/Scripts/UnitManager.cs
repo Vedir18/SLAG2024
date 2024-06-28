@@ -232,6 +232,7 @@ public class UnitManager : MonoBehaviour
                 foreach(Enemy enemy in _deadEnemies)
                 {
                     enemy.SpawnDebuffWave();
+                    enemy.Shout();
                     Debug.Log("dead debuf wave");
                 }
             }

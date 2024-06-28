@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
@@ -79,7 +80,7 @@ public class Unit : MonoBehaviour
         _unitMaterial1.SetFloat("_damaged", 1 - _currentMotivation / maxMotivation);
         _unitMaterial2.SetFloat("_outline", _currentBrave / 100f);
         _unitMaterial2.SetFloat("_damaged", 1 - _currentMotivation / maxMotivation);
-        _lineRenderer.emitting = _currentMotivation > 10;
+        _lineRenderer.enabled = _currentMotivation > 10;
 
     }
 
@@ -103,9 +104,9 @@ public class Unit : MonoBehaviour
 
     public void GoTo(Vector3 location, float speed)
     {
-
         Vector3 direction = location - _rb.transform.position;
-        direction = direction.normalized * speed;
+        _rb.transform.forward = direction;
+        direction = direction.normalized * speed * (1 + (_currentDedication / 100f));
         _rb.velocity = new Vector3(direction.x, 2, direction.z);
     }
 
@@ -114,9 +115,13 @@ public class Unit : MonoBehaviour
         Behave();
     }
 
-    public virtual void Attacked()
+    public virtual void Attacked(float damage)
     {
-
+        ModifyMotivated(-damage);
+        if (animator != null)
+        {
+            //animator.SetTrigger("T_hit");
+        }
     }
 
     public void ModifyMotivated(float delta)
@@ -136,9 +141,18 @@ public class Unit : MonoBehaviour
     }
     public void Shout()
     {
-        if(animator != null)
+        if (animator != null)
         {
             animator.SetTrigger("T_shout");
         }
     }
+
+    public void PlayAttack()
+    {
+        if (animator != null)
+        {
+            animator.SetTrigger("T_kick");
+        }
+    }
+
 }

@@ -37,8 +37,9 @@ public class Enemy : Unit
     void Start()
     {
         SetMaterials();
-        _currentMotivation = 100;
-        _currentDedication = baseDedicated * dedicatedMultiplier;
+        _currentMotivation = maxMotivation;
+        _currentDedication = 0;
+        _currentBrave = baseBrave;
         _state = UnitState.ChoosingTarget;
         _lastAttack = Time.time - _attackCooldown;
         _rb = GetComponent<Rigidbody>();
@@ -49,10 +50,9 @@ public class Enemy : Unit
         animator = gameObject.GetComponent<Animator>();
     }
 
-    public override void Attacked()
+    public override void Attacked(float damage)
     {
-        animator.SetTrigger("T_hit");
-        _currentMotivation = _currentMotivation - 10;
+        ModifyMotivated(-damage);
         if (_currentMotivation <= 0)
         {
             Die();
@@ -82,6 +82,8 @@ public class Enemy : Unit
     {
         if (_state == UnitState.ChoosingTarget)
         {
+
+            animator.SetBool("B_iswalking", false);
             // choose target
             AllyTarget = Manager.GetNearestAlly(_rb.transform.position);
             if (AllyTarget != null)
@@ -97,13 +99,15 @@ public class Enemy : Unit
         }
         else if (_state == UnitState.ChasingTarget)
         {
+
+            animator.SetBool("B_iswalking", true);
             if (GetDistanceToAllyTarget() <= DistanceToTarget)
             {
                 _state = UnitState.Attacking;
             }
             else
             {
-                GoTo(AllyTarget.transform.position, _currentDedication);
+                GoTo(AllyTarget.transform.position, 1);
             }
             // check if we already got to the target (DistToTarget)
             // if we did, change state to attacking
@@ -111,6 +115,8 @@ public class Enemy : Unit
         }
         else if (_state == UnitState.Attacking)
         {
+
+            animator.SetBool("B_iswalking", false);
             if (GetDistanceToAllyTarget() > DistanceToAttack)
             {
                 _state = UnitState.ChasingTarget;
@@ -118,7 +124,8 @@ public class Enemy : Unit
             else if (Time.time > _lastAttack + _attackCooldown)
             {
                 _lastAttack = Time.time;
-                AllyTarget.Attacked();
+                AllyTarget.Attacked(_currentBrave);
+                PlayAttack();
                 //Attack();
             }
         }
@@ -139,7 +146,7 @@ public class Enemy : Unit
             else if (_enemyState == EnemyState.GoingToTheEdge)
             {
 
-                GoTo(_edgeTarget, _speedWhenGoingToTheEdge);
+                GoTo(_edgeTarget, 2);
                 if (GetDistanceToTarget(_edgeTarget) < 0.1f)
                 {
                     Debug.Log("Im on the edge");

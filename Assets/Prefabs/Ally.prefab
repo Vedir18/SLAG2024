@@ -16,7 +16,7 @@ PrefabInstance:
     - target: {fileID: 5141080256636601240, guid: 5655c5930e901234cb31860759f0f15e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.99
       objectReference: {fileID: 0}
     - target: {fileID: 5141080256636601240, guid: 5655c5930e901234cb31860759f0f15e,
         type: 3}
@@ -26,7 +26,7 @@ PrefabInstance:
     - target: {fileID: 5141080256636601240, guid: 5655c5930e901234cb31860759f0f15e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 6.24
       objectReference: {fileID: 0}
     - target: {fileID: 5141080256636601240, guid: 5655c5930e901234cb31860759f0f15e,
         type: 3}
@@ -72,6 +72,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3378588637738223381}
   m_SourcePrefab: {fileID: 100100000, guid: 5655c5930e901234cb31860759f0f15e, type: 3}
+--- !u!96 &3822441415613498549 stripped
+TrailRenderer:
+  m_CorrespondingSourceObject: {fileID: 5063015142694125609, guid: 5655c5930e901234cb31860759f0f15e,
+    type: 3}
+  m_PrefabInstance: {fileID: 8308995376503276700}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7805399587480650892 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2241986484721975312, guid: 5655c5930e901234cb31860759f0f15e,
@@ -94,11 +100,26 @@ MonoBehaviour:
   IsDead: 0
   DistanceToTarget: 1.4
   DistanceToAttack: 1.8
-  maxMotivation: 100
-  baseBrave: 50
+  maxMotivation: 300
+  baseBrave: 10
   braveMultiplier: 100
-  baseDedicated: 100
+  baseDedicated: 0
   dedicatedMultiplier: 0.01
   _attackCooldown: 1
   EnemyTarget: {fileID: 0}
   AllyTarget: {fileID: 0}
+  _hatRenderer: {fileID: 8024863239230280811}
+  _bodyRenderer: {fileID: 8549510717711660526}
+  _lineRenderer: {fileID: 3822441415613498549}
+--- !u!137 &8024863239230280811 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2022522899952177399, guid: 5655c5930e901234cb31860759f0f15e,
+    type: 3}
+  m_PrefabInstance: {fileID: 8308995376503276700}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &8549510717711660526 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 426309206540185970, guid: 5655c5930e901234cb31860759f0f15e,
+    type: 3}
+  m_PrefabInstance: {fileID: 8308995376503276700}
+  m_PrefabAsset: {fileID: 0}

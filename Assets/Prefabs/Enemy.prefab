@@ -31,7 +31,7 @@ PrefabInstance:
     - target: {fileID: 5141080256636601240, guid: 5655c5930e901234cb31860759f0f15e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -3.01
       objectReference: {fileID: 0}
     - target: {fileID: 5141080256636601240, guid: 5655c5930e901234cb31860759f0f15e,
         type: 3}
@@ -41,7 +41,7 @@ PrefabInstance:
     - target: {fileID: 5141080256636601240, guid: 5655c5930e901234cb31860759f0f15e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -1.39
       objectReference: {fileID: 0}
     - target: {fileID: 5141080256636601240, guid: 5655c5930e901234cb31860759f0f15e,
         type: 3}
@@ -87,6 +87,24 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4404592646470733166}
   m_SourcePrefab: {fileID: 100100000, guid: 5655c5930e901234cb31860759f0f15e, type: 3}
+--- !u!96 &490800502120875074 stripped
+TrailRenderer:
+  m_CorrespondingSourceObject: {fileID: 5063015142694125609, guid: 5655c5930e901234cb31860759f0f15e,
+    type: 3}
+  m_PrefabInstance: {fileID: 4651335534361871467}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &5000773430724064537 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 426309206540185970, guid: 5655c5930e901234cb31860759f0f15e,
+    type: 3}
+  m_PrefabInstance: {fileID: 4651335534361871467}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &6745466923563474444 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2094291937789958759, guid: 5655c5930e901234cb31860759f0f15e,
+    type: 3}
+  m_PrefabInstance: {fileID: 4651335534361871467}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6886566583135503483 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2241986484721975312, guid: 5655c5930e901234cb31860759f0f15e,
@@ -109,14 +127,17 @@ MonoBehaviour:
   IsDead: 0
   DistanceToTarget: 1.4
   DistanceToAttack: 1.8
-  maxMotivation: 100
-  baseBrave: 50
+  maxMotivation: 300
+  baseBrave: 15
   braveMultiplier: 100
-  baseDedicated: 100
+  baseDedicated: 0
   dedicatedMultiplier: 0.01
   _attackCooldown: 1
   EnemyTarget: {fileID: 0}
   AllyTarget: {fileID: 0}
+  _hatRenderer: {fileID: 6745466923563474444}
+  _bodyRenderer: {fileID: 5000773430724064537}
+  _lineRenderer: {fileID: 490800502120875074}
   _emptyTarget: {fileID: 0}
   _speedWhenGoingToTheEdge: 100
   _buffWavePrefab: {fileID: 1789987007107859061, guid: 0f272e09dcf5d4045b3e8fdfe8eddf0d,
