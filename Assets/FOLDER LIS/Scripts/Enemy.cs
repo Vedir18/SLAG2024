@@ -145,8 +145,8 @@ public class Enemy : Unit
             }
             else if (_enemyState == EnemyState.GoingToTheEdge)
             {
-
-                GoTo(_edgeTarget, 2);
+                if (_edgeTarget != null)
+                    GoTo(_edgeTarget, 2);
                 if (GetDistanceToTarget(_edgeTarget) < 0.1f)
                 {
                     Debug.Log("Im on the edge");
